@@ -32,7 +32,7 @@ namespace TestApp.Domain.Entities
                 return Errors.General.ValueIsInvalid(query);
 
 
-            if (Int32.TryParse(data[0], out int code) && data[1].IsEmpty())
+            if (Int32.TryParse(data[0], out int code) && data[1].IsEmpty() == false)
             {
                 var value = data[1];
                 return new TestEntity(code, value);
