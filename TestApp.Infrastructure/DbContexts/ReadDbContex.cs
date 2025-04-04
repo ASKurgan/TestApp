@@ -45,7 +45,7 @@ namespace TestApp.Infrastructure.DbContexts
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(
-                typeof(WriteDbContext).Assembly,
+                typeof(ReadDbContext).Assembly,
                 type => type.FullName?.Contains("Configurations.Read") ?? false);
         }
     }
