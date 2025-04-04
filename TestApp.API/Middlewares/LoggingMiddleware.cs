@@ -8,11 +8,12 @@ namespace TestApp.API.Middlewares
     public class LoggingMiddleware
     {
         private readonly RequestDelegate _next;
-        private readonly LoggerDbContext _dbContext;
-        public LoggingMiddleware(RequestDelegate next, ILoggerFactory loggerFactory, LoggerDbContext dbContext)
+        private readonly IServiceScopeFactory _scopeFactory;
+        public LoggingMiddleware(RequestDelegate next, 
+                                 IServiceScopeFactory scopeFactory)
         {
             _next = next;
-            _dbContext = dbContext;
+            _scopeFactory = scopeFactory;
         }
 
         public async Task Invoke(HttpContext context)
@@ -23,16 +24,27 @@ namespace TestApp.API.Middlewares
             }
             finally
             {
-
-
-                _dbContext.LogEntities.Add(new LogEntity()
+                try 
                 {
-                    StatusCode = context.Response.StatusCode,
-                    Method = context.Request.Method,
-                    Url = context.Request.Path
-                });
+                    var scope = _scopeFactory.CreateScope();
+                    var loggerDbContext = scope.ServiceProvider.GetRequiredService<LoggerDbContext>();
+                    loggerDbContext.LogEntities.Add(new LogEntity()
+                    {
+                        StatusCode = context.Response.StatusCode,
+                        Method = context.Request.Method,
+                        Url = context.Request.Path
+                    });
 
-                _dbContext.SaveChanges();
+                    loggerDbContext.SaveChanges();
+                }
+
+                catch (Exception ex)
+                {
+                    // Так как это тестовое задание
+                    // В случае ошибки при сохранении в бд просто задавливаем исключение
+                    
+                }
+
             }
         }
     }

@@ -33,6 +33,7 @@ namespace TestApp.Infrastructure
             services.AddScoped<ITransaction, Transaction>();
             services.AddScoped<WriteDbContext>();
             services.AddScoped<ReadDbContext>();
+            services.AddSingleton<LoggerDbContext>();
            
             return services;
         }

@@ -8,11 +8,15 @@ namespace TestApp.API.Middlewares
     {
         private readonly RequestDelegate _next;
         private readonly ILogger<ExceptionMiddleware> _logger;
+        private readonly IServiceScopeFactory _scopeFactory;
 
-        public ExceptionMiddleware(RequestDelegate next, ILogger<ExceptionMiddleware> logger)
+        public ExceptionMiddleware(RequestDelegate next, 
+                                   ILogger<ExceptionMiddleware> logger,
+                                   IServiceScopeFactory scopeFactory)
         {
             _next = next;
             _logger = logger;
+            _scopeFactory = scopeFactory;
         }
 
         public async Task InvokeAsync(HttpContext context)

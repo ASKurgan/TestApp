@@ -24,6 +24,6 @@ namespace TestApp.Domain.Entities
         public string Url { get; set; } = string.Empty;
         public int StatusCode { get; set; }
 
-        public DateTime LogDate { get; set; }
+        public DateTime LogDate { get; set; } = DateTime.UtcNow;
     }
 }

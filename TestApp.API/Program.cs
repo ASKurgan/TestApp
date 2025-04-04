@@ -25,7 +25,7 @@ builder.Services.AddApplication();
 var app = builder.Build();
 
 
-app.UseMiddleware<ExceptionMiddleware>();
+
 // app.UseExceptionHandler();
 
 // Configure the HTTP request pipeline.
@@ -36,7 +36,7 @@ app.UseMiddleware<ExceptionMiddleware>();
 //}
 app.UseSwagger(); 
 app.UseSwaggerUI();
-//app.UseMiddleware<LoggingMiddleware>();
+app.UseMiddleware<LoggingMiddleware>();
 app.UseMiddleware<ExceptionMiddleware>();
 
 app.MapControllers();
