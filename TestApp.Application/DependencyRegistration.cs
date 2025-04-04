@@ -24,6 +24,7 @@ namespace TestApp.Application
             //services.AddScoped<PublishProductHandler>();
 
             services.AddScoped<TestEntityHandler>();
+            //services.AddSingleton<LoggerDbContext>();
             return services;
         }
 
