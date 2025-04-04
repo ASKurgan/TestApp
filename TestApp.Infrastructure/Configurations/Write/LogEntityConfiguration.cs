@@ -14,6 +14,7 @@ namespace TestApp.Infrastructure.Configurations.Write
         public void Configure(EntityTypeBuilder<LogEntity> builder)
         {
             builder.ToTable("log_entity");
+            builder.Property(t => t.Id).ValueGeneratedOnAdd();
             builder.HasKey(t => t.Id);
         }
     }

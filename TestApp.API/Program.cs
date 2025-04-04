@@ -36,7 +36,7 @@ app.UseMiddleware<ExceptionMiddleware>();
 //}
 app.UseSwagger(); 
 app.UseSwaggerUI();
-app.UseMiddleware<LoggingMiddleware>();
+//app.UseMiddleware<LoggingMiddleware>();
 app.UseMiddleware<ExceptionMiddleware>();
 
 app.MapControllers();

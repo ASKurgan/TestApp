@@ -5,42 +5,43 @@ using TestApp.Infrastructure.DbContexts;
 
 namespace TestApp.API.Middlewares
 {
-    public class LoggingMiddleware
-    {
-        private readonly RequestDelegate _next;
+    //public class LoggingMiddleware
+    //{
+    //    private readonly RequestDelegate _next;
+    //    private readonly LoggerDbContext _dbContext;
+    //    public LoggingMiddleware(RequestDelegate next, ILoggerFactory loggerFactory, LoggerDbContext dbContext)
+    //    {
+    //        _next = next;
+    //        _dbContext = dbContext;
+    //    }
 
-        public LoggingMiddleware(RequestDelegate next, ILoggerFactory loggerFactory)
-        {
-            _next = next;
-        }
+    //    public async Task Invoke(HttpContext context)
+    //    {
+    //        try
+    //        {
+    //            await _next(context);
+    //        }
+    //        finally
+    //        {
+                
 
-        public async Task Invoke(HttpContext context, LoggerDbContext loggerDbContext)
-        {
-            try
-            {
-                await _next(context);
-            }
-            finally
-            {
-                loggerDbContext.Database.EnsureCreatedAsync();
+    //            _dbContext.LogEntities.Add(new LogEntity()
+    //            {
+    //                StatusCode = context.Response.StatusCode,
+    //                Method = context.Request.Method,
+    //                Url = context.Request.Path
+    //            });
 
-                loggerDbContext.LogEntities.Add(new LogEntity()
-                {
-                    StatusCode = context.Response.StatusCode,
-                    Method = context.Request.Method,
-                    Url = context.Request.Path
-                });
+    //            _dbContext.SaveChanges();
+    //        }
+    //    }
+    //}
 
-                loggerDbContext.SaveChanges();
-            }
-        }
-    }
-
-    public static class LoggingMiddlewareExtensions
-    {
-        public static IApplicationBuilder UseLoggingMiddleware(this IApplicationBuilder builder)
-        {
-            return builder.UseMiddleware<LoggingMiddleware>();
-        }
-    }
+    //public static class LoggingMiddlewareExtensions
+    //{
+    //    public static IApplicationBuilder UseLoggingMiddleware(this IApplicationBuilder builder)
+    //    {
+    //        return builder.UseMiddleware<LoggingMiddleware>();
+    //    }
+    //}
 }

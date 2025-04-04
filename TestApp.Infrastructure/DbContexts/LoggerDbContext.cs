@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,19 +13,20 @@ namespace TestApp.Infrastructure.DbContexts
     public class LoggerDbContext : DbContext
     {
         private readonly IConfiguration _configuration;
-        public DbSet<LogEntity> LogEntities { get; set; }
-        public LoggerDbContext(IConfiguration configuration, DbContextOptions<LoggerDbContext> dbContext) : base(dbContext)
+        public DbSet<LogEntity> LogEntities => Set<LogEntity>();
+        public LoggerDbContext(IConfiguration configuration, IServiceScopeFactory scopeFactory)
         {
             _configuration = configuration;
+
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            // optionsBuilder.AddInterceptors(new DateInterceptor());
+            
             optionsBuilder.UseSqlServer(_configuration.GetConnectionString("LoggerConn"),
                 b => b.MigrationsAssembly("TestApp.Infrastructure"));
 
-            // optionsBuilder.UseSnakeCaseNamingConvention();
+            
 
             optionsBuilder.LogTo(Console.WriteLine, Microsoft.Extensions.Logging.LogLevel.Information);
         }
