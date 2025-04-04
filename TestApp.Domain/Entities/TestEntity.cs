@@ -23,6 +23,7 @@ namespace TestApp.Domain.Entities
 
         public static Result<TestEntity> Create(string query)
         {
+
             var dataChars = query.ToCharArray();
             if (!dataChars.Contains(':'))
                 return Errors.General.ValueIsInvalid(query);

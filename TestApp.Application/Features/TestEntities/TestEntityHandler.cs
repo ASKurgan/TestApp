@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TestApp.Application.Interfaces.DataAccess;
 using TestApp.Domain.Common;
+using TestApp.Domain.Entities;
 
 namespace TestApp.Application.Features.TestEntities
 {
@@ -20,34 +21,50 @@ namespace TestApp.Application.Features.TestEntities
             _transaction = transaction;
         }
 
-        public async Task<Result<IEnumerable<long>>> Handle(TestRequest command, CancellationToken ct)
+        public async Task<Result<IEnumerable<long>>> Handle(object [] objects, CancellationToken ct)
         {
-            var entities = new List<Domain.Entities.TestEntity>();
-            var entitiesId = new List<long>();
-            var entityResult = Domain.Entities.TestEntity.Create(command.Queries[0]);
-            
-            if (entityResult.IsFailure)
-            {
-                return entityResult.Error;
-            }
-            
-            foreach (var query in command.Queries)
-            {
-                entityResult = Domain.Entities.TestEntity.Create(query);
+            var testEntities = await _testEntity.GetAll(ct);
 
+            if (testEntities != null)
+            {
+               await _testEntity.DeleteAll(testEntities,ct);
+               await _transaction.SaveChangesAsync(ct);
+            }
+            var entitiesId = new List<long>();
+            var entities = new List<Domain.Entities.TestEntity>();
+
+            foreach (var item in objects)
+            {
+                var s = item.ToString();
+                if (s == null)
+                    return Error.Errors.General.ValueIsInvalid();
+               
+                s = s.Replace("\"", "").Replace("{", "").Replace("}", "");
+
+
+                var entityResult = TestEntity.Create(s);
+                
                 if (entityResult.IsFailure)
                 {
                     return entityResult.Error;
                 }
-                await _testEntity.Add(entityResult.Value, ct);
-                await _transaction.SaveChangesAsync(ct);
-                entitiesId.Add(entityResult.Value.Id);
+
+                var entity = entityResult.Value;
+                entities.Add(entity);
             }
 
-
-            await _transaction.SaveChangesAsync(ct);
+            entities.OrderBy(e => e.Code);
+            
+            foreach (var testEntity in entities)
+            {
+                await  _testEntity.Add(testEntity, ct);
+                await _transaction.SaveChangesAsync(ct);
+                entitiesId.Add(testEntity.Id);
+            }
 
             return entitiesId;
         }
+
+      }
     }
-}
+

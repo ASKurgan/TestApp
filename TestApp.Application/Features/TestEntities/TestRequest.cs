@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TestApp.Application.Features.TestEntities
 {
-    public record TestRequest(List<string> Queries);
+    public record TestRequest(object Query);
 
-    public record TestRequest1(List<object> Queries);
+    // public record TestRequest1(List<object> Queries);
 }
