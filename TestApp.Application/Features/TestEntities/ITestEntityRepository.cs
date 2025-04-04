@@ -14,6 +14,7 @@ namespace TestApp.Application.Features.TestEntities
         Task<Result<TestEntity>> GetById(long id, CancellationToken ct);
         Task<Result<TestEntity>> GetByValue(string name, CancellationToken ct);
         Task<IReadOnlyList<TestEntity>> GetAll(CancellationToken ct);
-       // Task AddEntity(TestEntity testEntity, CancellationToken cancellationToken);
+        Task<Result> DeleteAll(IReadOnlyList<TestEntity> testEntities,CancellationToken ct);
+        // Task AddEntity(TestEntity testEntity, CancellationToken cancellationToken);
     }
 }

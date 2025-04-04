@@ -13,8 +13,8 @@ namespace TestApp.Application.Features.TestEntities
     {
         public TestRequestValidator()
         {
-            RuleForEach(t => t.Queries)
-                .MustBeEntityObject(s => TestEntity.Create(s));
+            //RuleFor(t => t.Query)
+            //    .MustBeEntityObject(s => TestEntity.Create(s.ToString()));
         }
     }
 }

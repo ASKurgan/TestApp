@@ -9,6 +9,7 @@ using TestApp.Application.Features.TestEntities;
 using TestApp.Application.Interfaces.DataAccess;
 using TestApp.Infrastructure.DbContexts;
 using TestApp.Infrastructure.Providers;
+using TestApp.Infrastructure.Queries.TestEntities.GetTestEntity.GetAll;
 using TestApp.Infrastructure.Repositories;
 
 namespace TestApp.Infrastructure
@@ -20,7 +21,8 @@ namespace TestApp.Infrastructure
         {
             services.AddDataStorages(configuration);
             services.AddRepositories();
-           
+            services.AddQueries();
+
             return services;
         }
 
@@ -30,6 +32,7 @@ namespace TestApp.Infrastructure
         {
             services.AddScoped<ITransaction, Transaction>();
             services.AddScoped<WriteDbContext>();
+            services.AddScoped<ReadDbContext>();
            
             return services;
         }
@@ -38,6 +41,13 @@ namespace TestApp.Infrastructure
         {
             services.AddScoped<ITestEntityRepository, TestEntityRepository>();
 
+            return services;
+        }
+
+        private static IServiceCollection AddQueries(this IServiceCollection services)
+        {
+            services.AddScoped<GetEntitiesQuery>();
+           
             return services;
         }
 

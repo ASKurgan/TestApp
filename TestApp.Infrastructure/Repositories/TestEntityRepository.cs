@@ -56,17 +56,14 @@ namespace TestApp.Infrastructure.Repositories
             return testEntity;
         }
 
-
-        // Entities
-
-        //public async Task AddEntity(TestEntity testEntity, CancellationToken ct)
-        //{
-        //    await _dbContext.TestEntities.AddAsync(testEntity, ct);
-        //}
-
-        
-
-      
+       public  Task <Result> DeleteAll(IReadOnlyList<TestEntity> testEntities, CancellationToken ct)
+        {
+            foreach (var item in testEntities)
+            {
+               _dbContext.TestEntities.RemoveRange(item); 
+            }
+            return Task.FromResult(Result.Success());
+        }
     }
 
 }
